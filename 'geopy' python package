@@ -1,0 +1,30 @@
+import geopy.geocoders
+import webbrowser
+
+def find_geolocation(ip_address):
+    """Finds the geolocation of an IP address using the geopy library"""
+    try:
+        geolocator = geopy.geocoders.Nominatim(user_agent="my_app")
+        location = geolocator.geocode(ip_address)
+        return {'latitude': location.latitude, 'longitude': location.longitude}
+    except:
+        return None
+
+# Prompt the user to enter an IP address or URL
+ip_address = input("Enter an IP address or URL: ")
+
+# Find the geolocation of the IP address or URL
+geolocation = find_geolocation(ip_address)
+
+if geolocation:
+    print(f"IP address {ip_address} is located at {geolocation['latitude']}, {geolocation['longitude']}.")
+    
+    # Construct the Google Maps URL with the latitude and longitude values
+    maps_url = f"https://www.google.com/maps/search/?api=1&query={geolocation['latitude']},{geolocation['longitude']}"
+    
+    # Open the Google Maps URL in the user's default web browser
+    webbrowser.open(maps_url)
+else:
+    print(f"IP address {ip_address} not found.")
+
+
